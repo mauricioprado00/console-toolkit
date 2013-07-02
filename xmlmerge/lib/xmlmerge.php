@@ -76,83 +76,83 @@ class XmlMerge {
         $this->_save();
     }
     
-	/**
-	 * Merges configuration by loading a new xml file
-	 * @return boolean
-	 */
+    /**
+     * Merges configuration by loading a new xml file
+     * @return boolean
+     */
     public function mergeByFile($file)
     {
         if ($xml = $this->_loadXmlFile($file)) {
             return $this->mergeByXml($xml);
         }
-		
-		return false;
+        
+        return false;
     }
-	
-	/**
-	 * formats an xml
-	 * @param string $filename if specified it saves to a file and retuns a boolean
-	 * @return string | boolean
-	 */
-	public function asXml($filename = null)
-	{
-		$xmlString = $this->_current->asXml();
-		$xmlString = $this->_makeReplaces($xmlString);
-		
-		if (isset($filename)) {
-			return file_put_contents($filename, $xmlString);
-		}
-		return $xmlString;
-		$dom = new DOMDocument("1.0");
-		$dom->preserveWhiteSpace = false;
-		$dom->formatOutput = true;
-		$dom->loadXML($this->_current->asXML());
-		$xml = $dom->saveXML();
-		if (isset($filename)) {
-			return file_put_contents($filename, $xml);
-		}
-		return $xml;
-	}
     
-	/**
-	 * Merges an xml into the current loaded one
-	 * @param SimpleXMLElement $xml
-	 * @return boolean
-	 */
+    /**
+     * formats an xml
+     * @param string $filename if specified it saves to a file and retuns a boolean
+     * @return string | boolean
+     */
+    public function asXml($filename = null)
+    {
+        $xmlString = $this->_current->asXml();
+        $xmlString = $this->_makeReplaces($xmlString);
+        
+        if (isset($filename)) {
+            return file_put_contents($filename, $xmlString);
+        }
+        return $xmlString;
+        $dom = new DOMDocument("1.0");
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($this->_current->asXML());
+        $xml = $dom->saveXML();
+        if (isset($filename)) {
+            return file_put_contents($filename, $xml);
+        }
+        return $xml;
+    }
+    
+    /**
+     * Merges an xml into the current loaded one
+     * @param SimpleXMLElement $xml
+     * @return boolean
+     */
     public function mergeByXml($xml)
     {
-		return $this->_mergeXml($this->_current, $xml);
+        return $this->_mergeXml($this->_current, $xml);
     }
-	
-	private $_replaces = array();
-	
-	private function _mergeXml($destination, $source, $indentation=0)
-	{
-		$children = $source->children();
+    
+    private $_replaces = array();
+    
+    private function _mergeXml($destination, $source, $indentation=0)
+    {
+        $children = $source->children();
         if ($children->count() > 0) {
             foreach ($children as $name => $child) {
-				if (!isset($destination->$name)) {
-					$id = uniqid("pm");
-					$childXml = $child->asXml();
-					$this->_replaces[$id] = '    ' . $childXml . "\n" . str_repeat("    ", $indentation);
-					$destination->addChild($id);
-				} else {
-					$this->_mergeXml($destination->$name, $child, $indentation + 1);
-				}
-			}
+                if (!isset($destination->$name)) {
+                    $id = uniqid("pm");
+                    $childXml = $child->asXml();
+                    $this->_replaces[$id] = '    ' . $childXml . "\n" . str_repeat("    ", $indentation);
+                    $destination->addChild($id);
+                } else {
+                    $this->_mergeXml($destination->$name, $child, $indentation + 1);
+                }
+            }
         }
-	}
-	
-	/**
-	 * Make the replacements in the xml strings
-	 * @param string $xmlString
-	 * @return string
-	 */
-	private function _makeReplaces($xmlString)
-	{
-		foreach ($this->_replaces as $id => $replace) {
-			$xmlString = str_replace('<' . $id . '/>', $replace, $xmlString);
-		}
-		return $xmlString;
-	}
+    }
+    
+    /**
+     * Make the replacements in the xml strings
+     * @param string $xmlString
+     * @return string
+     */
+    private function _makeReplaces($xmlString)
+    {
+        foreach ($this->_replaces as $id => $replace) {
+            $xmlString = str_replace('<' . $id . '/>', $replace, $xmlString);
+        }
+        return $xmlString;
+    }
 }

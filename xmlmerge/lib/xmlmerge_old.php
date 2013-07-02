@@ -81,61 +81,61 @@ class XmlMerge {
         echo "need to be implemented\n";
     }
     
-	/**
-	 * Merges configuration by loading a new xml file
-	 * @return boolean
-	 */
+    /**
+     * Merges configuration by loading a new xml file
+     * @return boolean
+     */
     public function mergeByFile($file)
     {
         if ($xml = $this->_loadXmlFile($file)) {
             return $this->mergeByXml($xml);
         }
-		
-		return false;
+        
+        return false;
     }
-	
-	/**
-	 * formats an xml
-	 * @param string $filename if specified it saves to a file and retuns a boolean
-	 * @return string | boolean
-	 */
-	public function asXml($filename = null)
-	{
-		$dom = new DOMDocument("1.0");
-		$dom->preserveWhiteSpace = false;
-		$dom->formatOutput = true;
-		$dom->loadXML($this->_current->asXML());
-		$xml = $dom->saveXML();
-		if (isset($filename)) {
-			return file_put_contents($filename, $xml);
-		}
-		return $xml;
-	}
     
-	/**
-	 * Merges an xml into the current loaded one
-	 * @param SimpleXMLElement $xml
-	 * @return boolean
-	 */
+    /**
+     * formats an xml
+     * @param string $filename if specified it saves to a file and retuns a boolean
+     * @return string | boolean
+     */
+    public function asXml($filename = null)
+    {
+        $dom = new DOMDocument("1.0");
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($this->_current->asXML());
+        $xml = $dom->saveXML();
+        if (isset($filename)) {
+            return file_put_contents($filename, $xml);
+        }
+        return $xml;
+    }
+    
+    /**
+     * Merges an xml into the current loaded one
+     * @param SimpleXMLElement $xml
+     * @return boolean
+     */
     public function mergeByXml($xml)
     {
-		return $this->_mergeXml($this->_current, $xml);
+        return $this->_mergeXml($this->_current, $xml);
     }
-	
-	private function _mergeXml($destination, $source)
-	{
-		$children = $source->children();
+    
+    private function _mergeXml($destination, $source)
+    {
+        $children = $source->children();
         if ($children->count() > 0) {
             foreach ($children as $name => $child) {
-				if (!isset($destination->$name)) {
-					if ($child->children()->count() == 0) {
-						$destination->addChild($name, (string) $child);
-					} else {
-						$destination->addChild($name);
-					}
-				}
-				$this->_mergeXml($destination->$name, $child);
-			}
+                if (!isset($destination->$name)) {
+                    if ($child->children()->count() == 0) {
+                        $destination->addChild($name, (string) $child);
+                    } else {
+                        $destination->addChild($name);
+                    }
+                }
+                $this->_mergeXml($destination->$name, $child);
+            }
         }
-	}
+    }
 }

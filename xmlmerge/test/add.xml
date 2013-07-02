@@ -29,5 +29,5 @@
                 </Mage_Cms>
             </modules>
         </translate>
-	</adminhtml>
+    </adminhtml>
 </config>
