@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<template>
+    <directory name="app">
+        <directory name="etc">
+            <directory name="modules">
+                <file name="[Package]_[Module].xml"><![CDATA[
+<config>
+    <modules>
+        <[Package]_[Module]>
+            <active>true</active>
+            <codePool>core</codePool>
+            <depends>
+                <Mage_Payment/>
+                <Mage_Checkout/>
+            </depends>
+        </[Package]_[Module]>
+    </modules>
+</config>]]></file>
+            </directory>
+        </directory>
+        <directory name="code">
+            <directory name="core">
+                <directory name="[Package]">
+                    <directory name="[Module]">
+                        <directory name="etc">
+                            <file name="config.xml" file="config.xml.tpl"/>
+                        </directory>
+                    </directory>
+                </directory>
+            </directory>
+        </directory>
+    </directory>
+</template>
