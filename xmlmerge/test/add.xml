@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <frontend>
+        <routers>
+            <something>
+                <use>standard</use>
+                <args>
+                    <module>Mage_Something</module>
+                    <frontName>something</frontName>
+                </args>
+            </something>
+            <cms>
+                <somethingelse>
+                    <args>
+                        <module>Mage_Cms</module>
+                        <frontName>cms</frontName>
+                    </args>
+                </somethingelse>
+            </cms>
+        </routers>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Mage_Cms>
+                    <files>
+                        <another>Mage_Another.csv</another>
+                    </files>
+                </Mage_Cms>
+            </modules>
+        </translate>
+	</adminhtml>
+</config>
