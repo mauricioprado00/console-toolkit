@@ -9,7 +9,17 @@ class CommandLineRequest
     public function __construct()
     {
         //
-        var_dump($GLOBALS["argv"], __FILE__ . __LINE__);
+        var_dump(array($GLOBALS["argv"], __FILE__ . __LINE__));
+    }
+    
+    public function setDispatched($dispatched)
+    {
+        $this->_isDispatched = $dispatched ? true : false;
+    }
+    
+    public function isDispatched()
+    {
+        return $this->_isDispatched;
     }
     
     public function setModule($module)

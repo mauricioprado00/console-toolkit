@@ -2,6 +2,31 @@
 
 class CommandLineAction
 {
+    private $_request;
+    private $_response;
+    
+    public function setRequest($request)
+    {
+        $this->_request = $request;
+        return $this;
+    }
+    
+    public function getRequest()
+    {
+        return $this->_request;
+    }
+    
+    public function setResponse($response)
+    {
+        $this->_response = $response;
+        return $this;
+    }
+    
+    public function getResponse()
+    {
+        return $this->_response;
+    }
+    
     public function hasAction($action)
     {
         return is_callable(array($this, $this->getActionMethodName($action)));
